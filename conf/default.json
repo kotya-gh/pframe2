@@ -1,0 +1,18 @@
+{
+    "log":{
+        "rotation":7
+        
+    },
+    "replication":{
+        "exec":0,
+        "files":["file path1", "file path2"],
+        "netmount":{
+            "exec":0,
+            "user":"username",
+            "password":"password",
+            "servername":"servername",
+            "mountfrom":"Q$",
+            "mountto":"Q"
+        }
+    }
+}

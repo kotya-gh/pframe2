@@ -1,0 +1,19 @@
+{
+    "import_module":[
+        "array",
+        "crypt",
+        "encode",
+        "env",
+        "file",
+        "intl",
+        "log",
+        "mail",
+        "network",
+        "service",
+        "string",
+        "system",
+        "ex_excel",
+        "test"
+    ],
+    "locale":"en_US"
+}

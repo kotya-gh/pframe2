@@ -1,0 +1,8 @@
+{
+    "max_len_of_sheet_name":31,
+    "restricted_char":[":", "\\", "?", "[", "]", "/", "*"],
+    "xlPageBreakAutomatic":-4105,
+    "xlPageBreakManual":-4135,
+    "xlPageBreakNone":-4142,
+    "dateStringFormat":"__yyyyMMdd_HHmmss"
+}
