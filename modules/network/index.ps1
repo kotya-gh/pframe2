@@ -1,3 +1,4 @@
+. (Join-Path $PSScriptRoot "ipv4calc.ps1")
 <#
  # [Hosts]ホスト名、IPアドレスの書式に関するクラス
  #
@@ -176,6 +177,17 @@ class Hosts{
     [bool]ValidateIPaddress([string]$ipaddress) {
         return ($ipaddress -as [System.Net.IPAddress]).IPAddressToString -eq $ipaddress -and ($null -ne $ipaddress)
     }
+
+    [bool]ValidateNetworkaddress([string]$networkaddress) {
+        if($this.ValidateIPaddress($networkaddress) -eq $true){
+            # 入力された IP アドレスが IPv4 ネットワーク アドレスの形式かどうかを判定する
+            $ipBytes = [System.Net.IPAddress]::Parse($networkaddress).GetAddressBytes()
+            if (($ipBytes[3] -eq 0) -and ($ipBytes[2] -eq 0) -and ($ipBytes[1] -eq 0) -and ($ipBytes[0] -ne 0)) {
+                return $true
+            }            
+        }
+        return $false
+    }
 }
 
 <#
@@ -223,8 +235,9 @@ class NetCom{
  # @package なし
  #>
 class NetIF{
+    [object]$Ipv4Calc
     NetIF(){
-
+        $this.Ipv4Calc=New-Object Ipv4Calc
     }
     
     <#
@@ -294,9 +307,8 @@ class NetIF{
      # @see ipcalc.ps1
      # @throws なし
      #>
-    [array]IpCalc([string]$ipaddr, [string]$netmask){
-        [string]$out=(Join-Path $PSScriptRoot "ipcalc.ps1")+" -IPAddress ""$ipaddr"" -NetMask ""$netmask"""
-        return(Invoke-Expression $out)
+    [object]IpCalc([string]$ipaddr, [string]$netmask){
+        return $this.Ipv4Calc.GetIpv4Calc($ipaddr, $netmask)
     }
 
     <#
@@ -312,7 +324,7 @@ class NetIF{
      # @see ipcalc.ps1
      # @throws なし
      #>
-    [array]IpCalc([string]$ip_mask){
+    [object]IpCalc([string]$ip_mask){
         [object]$str=New-Object Str
         [array]$netif=$str.Explode("/", $ip_mask)
         if($netif.Length -eq 2){
@@ -325,8 +337,9 @@ class NetIF{
         }else{
             return $false
         }
-        [string]$out=(Join-Path $PSScriptRoot "ipcalc.ps1")+" ""$ip_mask"""
-        return(Invoke-Expression $out)
+        [string]$netmask=$this.Ipv4Calc.GetNetworkAddressFromCidr($netif[1])
+
+        return $this.Ipv4Calc.GetIpv4Calc($netif[0], $netmask)
     }
 
     <#

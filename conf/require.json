@@ -12,8 +12,7 @@
         "service",
         "string",
         "system",
-        "ex_excel",
-        "test"
+        "ex_excel"
     ],
     "locale":"en_US"
 }
