@@ -225,20 +225,13 @@
      # @throws なし
      #>
     [string]GetMinAddress([string]$ipaddr, [string]$netmask){
- 
-        # IP アドレスをバイト配列に変換する
-        $ipBytes = $this.GetAddressBytes($ipaddr)
-
         # ネットワーク アドレスを求める
         $network = $this.GetAddressBytes($this.GetNetworkAddress($ipaddr, $netmask))
 
         # 同じネットワーク内で使用可能な IP アドレスの最小値を出力する
         # (IP アドレスと同じ場合は +1 して出力する)
+        $network[3]++
         $minIp = $this.ParseIpByteToString($network)
-        # IP アドレスを 1 増やす
-        $ipBytes = $this.GetAddressBytes($minIp)
-        $ipBytes[3]++
-        $minIp = $this.ParseIpByteToString($ipBytes)
         return $minIp
     }
 
@@ -260,11 +253,6 @@
 
         # 同じネットワーク内で使用可能な IP アドレスの最大値を出力する
         # (ブロードキャスト アドレスより -1 して出力する)
-        #$maxIp = $this.ParseIpByteToString($broadcast)
-        #$maxIpBytes = $this.GetAddressBytes($maxIp)
-        #$maxIpBytes[3]--
-        #$maxIp = $this.ParseIpByteToString($maxIpBytes)
-
         $broadcast[3]--
         $maxIp = $this.ParseIpByteToString($broadcast)
         return $maxIp

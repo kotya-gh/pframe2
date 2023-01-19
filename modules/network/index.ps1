@@ -12,10 +12,11 @@
  #>
 class Hosts{
     [array]$define
-    [array]$hosts
-    
+    [array]$hosts    
+    [object]$Ipv4Calc
     Hosts(){
         $this.define=(Get-Content (Join-Path $PSScriptRoot "define.json") -Encoding UTF8 -Raw | ConvertFrom-Json)
+        $this.Ipv4Calc=New-Object Ipv4Calc
     }
 
     <#
@@ -175,18 +176,8 @@ class Hosts{
      # @throws なし
      #>
     [bool]ValidateIPaddress([string]$ipaddress) {
-        return ($ipaddress -as [System.Net.IPAddress]).IPAddressToString -eq $ipaddress -and ($null -ne $ipaddress)
-    }
-
-    [bool]ValidateNetworkaddress([string]$networkaddress) {
-        if($this.ValidateIPaddress($networkaddress) -eq $true){
-            # 入力された IP アドレスが IPv4 ネットワーク アドレスの形式かどうかを判定する
-            $ipBytes = [System.Net.IPAddress]::Parse($networkaddress).GetAddressBytes()
-            if (($ipBytes[3] -eq 0) -and ($ipBytes[2] -eq 0) -and ($ipBytes[1] -eq 0) -and ($ipBytes[0] -ne 0)) {
-                return $true
-            }            
-        }
-        return $false
+        return $this.Ipv4Calc.ValidateIPaddress($ipaddress)
+        #return ($ipaddress -as [System.Net.IPAddress]).IPAddressToString -eq $ipaddress -and ($null -ne $ipaddress)
     }
 }
 
