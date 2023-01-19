@@ -355,8 +355,6 @@ foreach($module in $INIT.GetRequiredConfigure().import_module){
 $script:LOCALE=$INIT.conf_require.locale
 [object]$INTL=New-Object Intl((Join-Path ([System.IO.Path]::GetDirectoryName($script:myInvocation.ScriptName)) "locale"))
 
-#Write-Host $script:LOCALE
-
 # set user log
 [object]$USR_LOG=[log]::new()
 [object]$USR_MSG=$USR_LOG.log_format

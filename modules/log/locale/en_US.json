@@ -1,0 +1,6 @@
+{
+    "Fail_to_rotate_log":"ログローテート処理に失敗しました。",
+    "Fail_to_write_log":"ログ書き込み処理に失敗しました。",
+    "Fail_to_make_log_directory":"ログ書き込み用ディレクトリの作成に失敗しました。",
+    "Fail_to_make_log_text":"ログメッセージテキストの作成に失敗しました。"
+}

@@ -1,0 +1,8 @@
+{
+    "Service_is_not_found":"指定されたサービスが存在しません。[__(service)]",
+    "Fail_to_get_install_apps_list":"インストールアプリケーション一覧の取得に失敗しました。",
+    "Fail_to_get_services_list":"サービス一覧の取得に失敗しました。",
+    "Fail_to_start_service":"サービスの起動処理に失敗しました。[__(service)]",
+    "Fail_to_stop_service":"サービスの停止処理に失敗しました。[__(service)]",
+    "Fail_to_restart_service":"サービスの再起動処理に失敗しました。[__(service)]"
+}

@@ -1,0 +1,11 @@
+{
+    "Invalid_subject_format":"Invalid subject format.",
+    "Invalid_port_number":"Invalid port number.",
+    "Invalid_ssl_flag":"Invalid ssl flag.",
+    "Invalid_smtp_user_format":"Invalid smtp user format.",
+    "No_file_exist":"No file exist.",
+    "Invalid_ipaddress_format":"Invalid ipaddress format.",
+    "Invalid_source_mail_address_format":"Invalid source mail address format.",
+    "Invalid_destination_mail_address_format":"Invalid destination mail address format.",
+    "Mail_body_is_null":"Mail body is null."
+}

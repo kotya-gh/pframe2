@@ -1,0 +1,6 @@
+{
+    "File_does_not_exist":"File does not exist.(__(path))",
+    "Directory_does_not_exist":"Directory does not exist.(__(path))",
+    "Duplicate_files":"Duplicate files.(__(path))",
+    "File_size_is_more_than_2GB":"File size is more than 2GB.(__(path))"
+}
