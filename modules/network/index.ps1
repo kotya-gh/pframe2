@@ -377,3 +377,150 @@ class NetIF{
         return $true
     }
 }
+
+<#
+ # [NetMount]ネットワークドライブ操作用クラス
+ #
+ # ネットワークドライブのマウント等等の処理を定義する。
+ # ネットワークドライブマウント用のクラス変数として$mount_infoをhashで定義する。
+ # $mount_infoのメンバを以下に示す。全てデフォルト値は空とする。
+ #  username:被マウントサーバのユーザ名を指定する
+ #  password:被マウントサーバのパスワードを指定する
+ #  mountservername:被マウントサーバ名を、ネットワークで到達可能な名前で指定する
+ #  mountpoint_remote:被マウントサーバのマウント場所をフルパスで指定する
+ #  mountdrive_local:マウントするドライブ名を[A-Z]で指定する
+ #
+ # @access public
+ # @author - <-@->
+ # @copyright MIT
+ # @category ネットワークドライブ操作
+ # @package なし
+ #>
+ class NetMount{
+
+    [object]$mount_info=@{
+        username="";
+        password="";
+        mountservername="";
+        mountpoint_remote="";
+        mountdrive_local="";
+    }
+    [array]$driveName=@("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+
+    NetMount(){
+
+    }
+
+    <#
+     # [NetMount]ネットワークドライブマウント処理
+     #
+     # クラス変数$mount_infoで指定する内容でネットワークドライブをマウントする。
+     # $mount_infoのメンバを以下に示す。全てデフォルト値は空とする。
+     #  username:被マウントサーバのユーザ名を指定する
+     #  password:被マウントサーバのパスワードを指定する
+     #  mountservername:被マウントサーバ名を、ネットワークで到達可能な名前で指定する
+     #  mountpoint_remote:被マウントサーバのマウント場所をフルパスで指定する
+     #  mountdrive_local:マウントするドライブ名を[A-Z]で指定する
+     # ネットワークドライブのマウントに失敗した時、および$mount_infoの設定内容が不正であった場合$falseを返す。
+     #
+     # @access public
+     # @param なし
+     # @return bool ネットワークドライブマウント成否
+     # @see New-PSDrive
+     # @throws ネットワークドライブマウントで例外発生時、$falseを返す。
+     #>
+    [bool]NfsMount(){
+        # 入力値の有無を確認
+        if($this.mount_info.mountpoint_remote -eq ""){
+            return $false
+        }
+
+        # ローカルドライブの使用可否を確認
+        if($this.IsDriveUseable($this.mount_info.mountdrive_local) -eq $false){
+            return $false
+        }
+
+        # 認証情報のインスタンスを生成する
+        [object]$sys=New-Object SystemUtil
+        if(($cred=$sys.GetCredential($this.mount_info.mountservername, $this.mount_info.username, $this.mount_info.password)) -eq $false){
+            return $false
+        }
+
+        # ネットワークマウントを作成する
+        try {
+            New-PSDrive -Name $this.mount_info.mountdrive_local -PSProvider FileSystem -Root "\\$this.mount_info.mountservername\$this.mount_info.mountpoint_remote" -Credential $cred;
+        } catch {
+            $script:LAST_ERROR_MESSAGE=$_.Exception
+            return $false
+        }
+        return $true
+    }
+
+    <#
+     # [NetMount]ネットワークドライブアンマウント処理
+     #
+     # $drivenameで指定するドライブ名をアンマウントする。
+     # ドライブ名は[A-Z]で指定する。
+     # ドライブがマウント状態ではない場合、およびアンマウント失敗時$falseを返す。
+     #
+     # @access public
+     # @param string $drivename アンマウントドライブ名
+     # @return bool ネットワークドライブアンマウント成否
+     # @see Remove-PSDrive
+     # @throws ネットワークドライブアンマウントで例外発生時、$falseを返す。
+     #>
+    [bool]NfsUnmount([string]$drivename){
+        # ローカルドライブがマウントされていることを確認
+        if($this.IsDriveUseable($drivename) -eq $true){
+            return $false
+        }
+        # ドライブをアンマウントする
+        try {
+            Remove-PSDrive $drivename
+        } catch {
+            $script:LAST_ERROR_MESSAGE=$_.Exception
+            return $false
+        }
+        return $true
+    }
+
+    <#
+     # [NetMount]ドライブのマウント状態の取得
+     #
+     # ドライブレターが[A-Z]で示される自ホストのドライブのうち、使用可能なドライブレターをarrayで返す。
+     #
+     # @access public
+     # @param なし
+     # @return array 使用可能なドライブレター
+     # @see get-psdrive
+     # @throws なし
+     #>
+    [array]GetUseableDriveName(){
+          [array]$usingDrive = get-psdrive | ForEach-Object{$_.name}
+
+          [array]$availableDrive = Compare-Object $this.driveName $usingDrive | 
+          Where-Object{$_.SideIndicator -match "<="} | 
+          ForEach-Object{$_.InputObject}
+
+          return $availableDrive
+    }
+
+    <#
+     # [NetMount]ドライブのマウント可否を判定
+     #
+     # $drivenameで指定するドライブ名が使用されているかを判定する。
+     # ドライブ名は[A-Z]で指定する。
+     # ドライブがマウント状態である場合$trueを返す。
+     # ドライブがアンマウント状態である場合$falseを返す。
+     #
+     # @access public
+     # @param string $drivename 確認対象のドライブ名
+     # @return bool ドライブ使用時$true、未使用時$false
+     # @see なし
+     # @throws なし
+     #>
+    [bool]IsDriveUseable([string]$driveName){
+        [object]$arr=New-Object ExArray
+        return $arr.ArraySearch($driveName, $this.GetUseableDriveName())
+    }
+}

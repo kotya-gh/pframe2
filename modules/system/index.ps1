@@ -158,4 +158,38 @@ class SystemUtil{
         $processId = Get-WmiObject win32_process -filter processid=$pid | ForEach-Object{$_.parentprocessid;}
         return $processId
     }
+
+    <#
+     # [SystemUtil]認証情報の作成
+     #
+     # $computerNameでコンピュータ名、$usernameでユーザ名、$passwordでパスワード（平文）を指定し、クレデンシャルを作成する。
+     # クレデンシャル作成失敗時$falseを返す。
+     #
+     # @access public
+     # @param $computerName サーバ名を指定する
+     # @param $username ユーザ名を指定する
+     # @param $password ユーザのパスワードを指定する
+     # @return object クレデンシャル
+     # @see New-Object System.Management.Automation.PSCredential
+     # @throws クレデンシャル作成で例外発生時、$falseを返す。
+     #>
+    [object]GetCredential([string]$computerName, [string]$username, [string]$password){
+        # 入力値の有無を確認
+        if(
+            ($username -eq "") -or 
+            ($password -eq "") -or 
+            ($computerName -eq "")){
+            return $false
+        }
+        
+        # 認証情報のインスタンスを生成する
+        try {
+            $securePass = ConvertTo-SecureString $password -AsPlainText -Force;
+            $cred = New-Object System.Management.Automation.PSCredential "$computerName\$username", $securePass;
+        } catch {
+            $script:LAST_ERROR_MESSAGE=$_.Exception
+            return $false
+        }
+        return $cred
+    }
 }
