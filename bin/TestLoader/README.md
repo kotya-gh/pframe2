@@ -2,9 +2,7 @@
 
 ## 概要
 
-TestLoaderはコマンドを指定の順序で実行し、実行結果、コマンドのリターンコードを取得します。
-
-また、実行結果はファイルに自動的に記録されます。
+TestLoaderはコマンドを指定の順序で実行し、実行結果、コマンドのリターンコードを取得します。実行結果はファイルに自動的に記録されます。
 
 ## インストール法、始め方
 
@@ -23,22 +21,14 @@ TestLoader実行後、次のような内容を標準出力します。
 a
 コマンドのリターンコード: 0
 ```
-また、コマンド実行結果はテキストファイル、およびJSONファイルに記録されます。
-
-ファイル名は次のフォーマットで出力されます。
-
-0001_hostname_YYYYMMDDHHMMSS_true.txt
-
-0001_hostname_YYYYMMDDHHMMSS_true.json
-
-0002_hostname_YYYYMMDDHHMMSS_false.txt
-
-0002_hostname_YYYYMMDDHHMMSS_false.json
+コマンド実行結果はテキストファイル、およびJSONファイルに記録されます。ファイル名は次のフォーマットで出力されます。
+- 0001_hostname_YYYYMMDDHHMMSS_true.txt
+- 0001_hostname_YYYYMMDDHHMMSS_true.json
+- 0002_hostname_YYYYMMDDHHMMSS_false.txt
+- 0002_hostname_YYYYMMDDHHMMSS_false.json
 
 先頭4桁は後述する「testNo」で指定の項番です。
-
 hostnameは「hostname」設定の文字列です。
-
 true/falseは「returnCode」、「returnMsg」と実行結果を比較し、一致すればtrue、不一致の場合はfalseを付与します。
 
 ## list.json の設定
