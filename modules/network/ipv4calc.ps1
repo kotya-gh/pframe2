@@ -124,8 +124,7 @@
         for ($i = 0; $i -lt 4; $i++) {
             $broadcast[$i]= [byte]($ipBytes[$i] -bor (255 -bxor $maskBytes[$i]))
         }
-        $broadcast = $this.ParseIpByteToString($broadcast)
-        return $broadcast
+        return $this.ParseIpByteToString($broadcast)
     }
 
     <#
@@ -144,12 +143,16 @@
         $maskBytes = $this.GetAddressBytes($netmask)
 
         # ワイルドカード アドレスを出力する
+        # 
+        # ワイルドカード アドレスはサブネットマスクとビット単位で反転させることで求められる。
+        # 例：サブネットマスクが255.255.255.0なら、ワイルドカードアドレスは0.0.0.255となる。
+        # この処理では、まず全て1のバイト配列（255.255.255.255）を作成し、それからサブネットマスクと引き算して絶対値を取ることで反転させている。
         $wildcard = $this.GetAddressBytes("255.255.255.255")
         for ($i = 0; $i -lt 4; $i++) {
             $wildcard[$i] = [byte]([math]::Abs($wildcard[$i] - $maskBytes[$i]))
         }
-        $wildcard = $this.ParseIpByteToString($wildcard)
-        return $wildcard
+        # バイト配列から文字列に変換する
+        return $this.ParseIpByteToString($wildcard)
     }
 
     <#
@@ -176,8 +179,7 @@
         for ($i = 0; $i -lt 4; $i++) {
             $network[$i] = [byte]($ipBytes[$i] -band $maskBytes[$i])
         }
-        $network = $this.ParseIpByteToString($network)
-        return $network
+        return $this.ParseIpByteToString($network)
     }
 
     <#
@@ -196,18 +198,26 @@
         # ネットワーク マスクをバイト配列に変換する
         $maskBytes = $this.GetAddressBytes($netmask)
 
+        # ネットワークアドレスを取得する
         $network = $this.GetNetworkAddress($ipaddr, $netmask)
-        # ネットワーク マスクのプレフィックス長を取得する
+       
+        # ネットマスクアドレスからバイト配列を取得し反転する
+        [array]::Reverse($maskBytes)
+
+        # バイト配列からビット配列（0/1）に変換する
+        $maskBits = [System.Collections.BitArray]::new($maskBytes)
+
+        # ビット配列からプレフィックス長（0から始まる最初の1まで）を求める
         $prefix = 0
-        for ($i = 0; $i -lt 4; $i++) {
-            for ($j = 0; $j -lt 8; $j++) {
-                if (($maskBytes[$i] -band (1 -shl (7 - $j))) -ne 0) {
-                    $prefix++
-                } else {
-                    break
-                }
+        foreach ($bit in $maskBits) {
+            if ($bit) {
+                break
             }
+            $prefix++
         }
+        # プレフィックス長からサブネットマスク長（32 - プレフィックス長）を求めて出力する
+        $prefix=$maskBits.Length-$prefix
+
         # スラッシュ表記のネットワーク アドレスを出力する
         return "$network/$prefix"
     }
@@ -231,8 +241,7 @@
         # 同じネットワーク内で使用可能な IP アドレスの最小値を出力する
         # (IP アドレスと同じ場合は +1 して出力する)
         $network[3]++
-        $minIp = $this.ParseIpByteToString($network)
-        return $minIp
+        return $this.ParseIpByteToString($network)
     }
 
     <#
@@ -254,8 +263,7 @@
         # 同じネットワーク内で使用可能な IP アドレスの最大値を出力する
         # (ブロードキャスト アドレスより -1 して出力する)
         $broadcast[3]--
-        $maxIp = $this.ParseIpByteToString($broadcast)
-        return $maxIp
+        return $this.ParseIpByteToString($broadcast)
     }
 
     <#
@@ -290,31 +298,17 @@
         if($this.ValidateIPaddress($networkaddress) -eq $true){
             # 入力された IP アドレスが IPv4 ネットワーク アドレスの形式かどうかを判定する
             $ipBytes = $this.GetAddressBytes($networkaddress)
-            $res=$true
-            $mid=0
-            for($j=0; $j -lt 4; $j++){
-                $comp=128
-                $ad=$ipBytes[$j]
-                for($i=0; $i -lt 8; $i++){
-                    $ad=($ad -bxor $comp)
-                    if($ad -gt $comp){
-                        $res=$false
-                        break
-                    }elseif($ad -eq $comp){
-                        $res=($res -and  $true)
-                        break
-                    }
-                    $comp=($comp -shr 1)
-                }
-                if(($ipBytes[$j] -ne 0) -and ($ipBytes[$j] -ne 255)){
-                    $mid++
-                }
+
+            # 各オクテットが2進数に変換したときに連続する1と0のパターンになっているかどうかチェック
+            $Binary = ""
+            foreach ($Octet in $ipBytes) {
+                # 8桁になるように0を補完して2進数に変換
+                $Binary += [Convert]::ToString($Octet, 2).PadLeft(8,"0")
             }
-            if($mid -gt 1){
-                return $false
-            }elseif(($res -eq $true) -and ($ipBytes[0] -ge $ipBytes[1]) -and ($ipBytes[1] -ge $ipBytes[2]) -and ($ipBytes[2] -ge $ipBytes[3])){
-                return $true
-            }       
+            if ($Binary -match "^1+0+$") {
+                # 連続する1と0のパターンの場合はTrueを返す
+                return $True
+            }
         }
         return $false
     }
@@ -333,22 +327,14 @@
     [string]GetNetworkAddressFromCidr([int]$cidr){
         $netmask = $this.GetAddressBytes("255.255.255.255")
         for($j=0; $j -lt $netmask.Length; $j++){
-            $mask=$cidr
-            if($cidr -ge 8){
-                $mask=8
-            }elseif($cidr -lt 0){
-                $mask=0
-            }
-            $c=255
-            for($i=0; $i -lt $mask; $i++){
-                $c--
-                $c=($c -shr 1)
-            }
-            $netmask[$j]=$netmask[$j] -bxor $c
-            $cidr-=8
+            # CIDRが8以上なら8、0以下なら0、それ以外ならそのまま
+            $mask = [Math]::Max([Math]::Min($cidr, 8), 0)
+            # バイト値を左シフトしてネットマスクを作成
+            $netmask[$j] = $netmask[$j] -shl (8 - $mask)
+            # CIDRから8を引く
+            $cidr -= 8            
         }
-        $netmask = $this.ParseIpByteToString($netmask)
-        return $netmask 
+        return $this.ParseIpByteToString($netmask)
     }
 
     <#
@@ -364,16 +350,24 @@
      # @throws なし
      #>
     [Int64]HostsPerNet($broadCast, $network){
+        # アドレスからバイト配列（0～255）に変換する
         $broadCastBytes=$this.GetAddressBytes($broadCast)
         $networkBytes=$this.GetAddressBytes($network)
 
-        [Int64]$bnum=0
-        [Int64]$nnum=0
-        for($i=0; $i -lt 4; $i++){
-            $bnum+=$broadCastBytes[$i]*[Math]::Pow(256, 3-$i)
-            $nnum+=$networkBytes[$i]*[Math]::Pow(256, 3-$i)
+        # アドレス長（4）
+        $addressLength = 4
+        # バイトサイズ（256）
+        $byteSize = 256
+
+        # バイト配列から10進数（0～4294967295）に変換する
+        [Int64]$broadcastNumber=0
+        [Int64]$networkNumber=0
+        for($i=0; $i -lt $addressLength; $i++){
+            $broadcastNumber+=$broadcastBytes[$i]*[Math]::Pow($byteSize, $addressLength-$i-1)
+            $networkNumber+=$networkBytes[$i]*[Math]::Pow($byteSize, $addressLength-$i-1)
         }
-        $Hostspernet = ($bnum - $nnum - 1 )
-        return $Hostspernet
+      
+        # 10進数からホスト数（サブネット内）を求めて返す
+        return ($broadcastNumber - $networkNumber - 1 )
    }
 }
