@@ -1,0 +1,11 @@
+{
+    "Starting_test_id":"テストID __(id) のテストを開始します。",
+    "Starting_test_item_id":"テスト項目番号 __(id) のコマンドを実行します。実行ホスト: __(hostname)",
+    "Running_command":"次のコマンドを実行します。: __(command)",
+    "Command_result_message":"コマンド実行後、次のメッセージが出力されます。: __(returnMsg)",
+    "Command_returncode":"このコマンドは次のリターンコードを返します。: __(returncode)",
+    "Start_datetime":"コマンド実行開始時刻: __(datetime)",
+    "Command_result":"コマンド実行結果",
+    "Command_return_code":"コマンドのリターンコード: __(returncode)",
+    "End_datetime":"コマンド実行終了時刻: __(datetime)"
+}

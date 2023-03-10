@@ -1,0 +1,26 @@
+{
+    "EvidenceHomeDir":"",
+    "TestConfigure":[
+        {
+            "testId":"id-1",
+            "testItems":[
+                {
+                    "testNo":1,
+                    "hostname":"hostname",
+                    "testCommands":[
+                        {"order":2, "command":"ls", "returnCode":0, "returnMsg":""},
+                        {"order":1, "command":"hostname", "returnCode":0, "returnMsg":"hostname"}
+                    ]
+                },
+                {
+                    "testNo":2,
+                    "hostname":"hostname",
+                    "testCommands":[
+                        {"order":1, "command":"date", "returnCode":0, "returnMsg":""},
+                        {"order":2, "command":"echo 'a'", "returnCode":0, "returnMsg":"a"}
+                    ]
+                }
+            ]            
+        }
+    ]
+}
