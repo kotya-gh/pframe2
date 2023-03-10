@@ -33,27 +33,19 @@ true/false‚ÍureturnCodevAureturnMsgv‚ÆÀsŒ‹‰Ê‚ğ”äŠr‚µAˆê’v‚·‚ê‚ÎtrueA•sˆ
 
 ## list.json ‚Ìİ’è
 
-EvidenceHomeDirFÀsŒ‹‰Ê‚ğŠi”[‚·‚éƒfƒBƒŒƒNƒgƒŠ‚ğƒtƒ‹ƒpƒX‚Åw’è‚µ‚Ü‚·B‹ó‚Ìê‡‚ÍƒXƒNƒŠƒvƒgƒ‹[ƒg”z‰º‚Ìfiles‚É•Û‘¶‚µ‚Ü‚·B
-
-TestConfigureFÀs‚·‚éƒRƒ}ƒ“ƒh‚ğŠi”[‚·‚é”z—ñ‚Å‚·B
-
-testIdFÀsŒ‹‰Ê‚ğŠi”[‚·‚éƒTƒuƒfƒBƒŒƒNƒgƒŠ‚Å‚·BEvidenceHomeDir”z‰º‚Éì¬‚³‚ê‚Ü‚·B
-
-testItemsFƒzƒXƒg‚²‚Æ‚ÉAÀs‚µ‚½‚¢ƒRƒ}ƒ“ƒh‚ğŠi”[‚·‚é”z—ñ‚Å‚·B
-
-testNoF€”Ô‚Å‚·BÀsŒ‹‰Ê‚Ìƒtƒ@ƒCƒ‹–¼‚Ìæ“ª‚SŒ…i‚O‹l‚ßj‚É•t—^‚³‚ê‚Ü‚·B
-
-hostnameFƒRƒ}ƒ“ƒh‚ğÀs‚·‚éƒzƒXƒg–¼‚Å‚·BƒXƒNƒŠƒvƒgÀsƒzƒXƒg‚Æ–{İ’è‚ªˆÙ‚È‚éê‡AƒRƒ}ƒ“ƒhÀs‚ªƒXƒLƒbƒv‚³‚ê‚Ü‚·B
-
-testCommandsFŒÂX‚ÌƒRƒ}ƒ“ƒh‚ğŠi”[‚·‚é”z—ñ‚Å‚·B
-
-orderFtestCommands“à‚Å‚ÌƒRƒ}ƒ“ƒhÀs‡˜‚ğw’è‚µ‚Ü‚·B
-
-commandFÀs‚µ‚½‚¢ƒRƒ}ƒ“ƒh‚ğw’è‚µ‚Ü‚·B
-
-returnCodeFŠú‘Ò‚·‚éƒŠƒ^[ƒ“ƒR[ƒh‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B
-
-returnMsgFŠú‘Ò‚·‚éo—ÍƒƒbƒZ[ƒW‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B‹ó‚Ìê‡‚Íƒ`ƒFƒbƒN‚ğƒXƒLƒbƒv‚µ‚Ü‚·B
+|•Ï”–¼|à–¾|
+|:--|:--|
+|EvidenceHomeDir|ÀsŒ‹‰Ê‚ğŠi”[‚·‚éƒfƒBƒŒƒNƒgƒŠ‚ğƒtƒ‹ƒpƒX‚Åw’è‚µ‚Ü‚·B‹ó‚Ìê‡‚ÍƒXƒNƒŠƒvƒgƒ‹[ƒg”z‰º‚Ìfiles‚É•Û‘¶‚µ‚Ü‚·B|
+|TestConfigure|Às‚·‚éƒRƒ}ƒ“ƒh‚ğŠi”[‚·‚é”z—ñ‚Å‚·B|
+|testId|ÀsŒ‹‰Ê‚ğŠi”[‚·‚éƒTƒuƒfƒBƒŒƒNƒgƒŠ‚Å‚·BEvidenceHomeDir”z‰º‚Éì¬‚³‚ê‚Ü‚·B|
+|testItems|ƒzƒXƒg‚²‚Æ‚ÉAÀs‚µ‚½‚¢ƒRƒ}ƒ“ƒh‚ğŠi”[‚·‚é”z—ñ‚Å‚·B|
+|testNo|€”Ô‚Å‚·BÀsŒ‹‰Ê‚Ìƒtƒ@ƒCƒ‹–¼‚Ìæ“ª‚SŒ…i‚O‹l‚ßj‚É•t—^‚³‚ê‚Ü‚·B|
+|hostname|ƒRƒ}ƒ“ƒh‚ğÀs‚·‚éƒzƒXƒg–¼‚Å‚·BƒXƒNƒŠƒvƒgÀsƒzƒXƒg‚Æ–{İ’è‚ªˆÙ‚È‚éê‡AƒRƒ}ƒ“ƒhÀs‚ªƒXƒLƒbƒv‚³‚ê‚Ü‚·B|
+|testCommands|ŒÂX‚ÌƒRƒ}ƒ“ƒh‚ğŠi”[‚·‚é”z—ñ‚Å‚·B|
+|order|testCommands“à‚Å‚ÌƒRƒ}ƒ“ƒhÀs‡˜‚ğw’è‚µ‚Ü‚·B|
+|command|Às‚µ‚½‚¢ƒRƒ}ƒ“ƒh‚ğw’è‚µ‚Ü‚·B|
+|returnCode|Šú‘Ò‚·‚éƒŠƒ^[ƒ“ƒR[ƒh‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B|
+|returnMsg|Šú‘Ò‚·‚éo—ÍƒƒbƒZ[ƒW‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B‹ó‚Ìê‡‚Íƒ`ƒFƒbƒN‚ğƒXƒLƒbƒv‚µ‚Ü‚·B|
 
 ## ŠJ”­Ò
 
