@@ -47,10 +47,6 @@ true/false‚ÍureturnCodevAureturnMsgv‚ÆÀsŒ‹‰Ê‚ğ”äŠr‚µAˆê’v‚·‚ê‚ÎtrueA•sˆ
 |returnCode|Šú‘Ò‚·‚éƒŠƒ^[ƒ“ƒR[ƒh‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B|
 |returnMsg|Šú‘Ò‚·‚éo—ÍƒƒbƒZ[ƒW‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B‹ó‚Ìê‡‚Íƒ`ƒFƒbƒN‚ğƒXƒLƒbƒv‚µ‚Ü‚·B|
 
-## ŠJ”­Ò
-
-pikaru
-
 ## ƒ‰ƒCƒZƒ“ƒX
 
 MIT
