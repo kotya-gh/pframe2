@@ -10,7 +10,10 @@ if($USR_CONF.list.EvidenceHomeDir -eq ""){
 }elseif($fileClass.IsFile($USR_CONF.list.EvidenceHomeDir) -eq $false){
     $EvidenceHomeDir=$USR_CONF.list.EvidenceHomeDir
 }
-$fileClass.MkDir($EvidenceHomeDir)
+if($fileClass.IsFile($EvidenceHomeDir) -eq $false){
+    $fileClass.MkDir($EvidenceHomeDir)
+}
+
 
 # ホスト名の取得
 [object]$envClass=New-Object Env
@@ -131,13 +134,24 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
 
             # 改行
             write-host
+
+           
+
             Add-Content -Path $evidenceFileName -Value "`n"
             $testResult+=$testResultObject
+
+            
         }
+        
         [string]$suffix = if($CheckResult){"_true"}else{"_false"}
-        $fileClass.Move($evidenceFileName, $evidenceFileName+$suffix+".txt")
-        $evidenceJsonFileName=$evidenceJsonFileName+$suffix+".json"
-        Add-Content -Path $evidenceJsonFileName -Value (ConvertTo-Json $testResult -Depth 5)      
+        if($fileClass.Move($evidenceFileName, $evidenceFileName+$suffix+".txt")){
+            $evidenceJsonFileName=$evidenceJsonFileName+$suffix+".json"
+
+       
+            Add-Content -Path $evidenceJsonFileName -Value (ConvertTo-Json $testResult -Depth 5)      
+        }
+
+
     }
 }
 
