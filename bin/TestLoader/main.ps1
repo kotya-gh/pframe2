@@ -113,13 +113,11 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
             $testResultObject.Add("Returncode", $result[-1])
 
             # 簡易チェック
-            if($result[-1] -ne $command.returnCode){
-                $CheckResult=$false
+            [bool]$tmpResult = ($result[-1] -eq $command.returnCode) -and (($command.returnMsg -eq "") -or ($strClass.Strpos($resultOutputString, $command.returnMsg) -ne $false))
+            if($tmpResult -eq $false){
+                $CheckResult=$tmpResult
             }
-            if(($command.returnMsg -ne "") -and ($strClass.Strpos($resultOutputString, $command.returnMsg) -eq $false)){
-                $CheckResult=$false
-            }
-            $testResultObject.Add("CheckResult", $CheckResult)
+            $testResultObject.Add("CheckResult", $tmpResult)
 
             # 改行
             &$OutputMessage "`n" $evidenceFileName
