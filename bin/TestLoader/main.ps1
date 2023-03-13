@@ -14,7 +14,6 @@ if($fileClass.IsFile($EvidenceHomeDir) -eq $false){
     $fileClass.MkDir($EvidenceHomeDir)
 }
 
-
 # ホスト名の取得
 [object]$envClass=New-Object Env
 [string]$hostname=$envClass.GetHostname()
@@ -44,8 +43,7 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
         }
 
         # テスト用コマンドをオーダー順にソート
-        [array]$testCommands=$testItem.testCommands
-        [array]$sortTestCommands=($testCommands | Sort-Object order)
+        [array]$sortTestCommands=($testItem.testCommands | Sort-Object order)
 
         # テスト番号を0詰めで4桁表記とする
         [string]$testNo=$testItem.testNo.ToString().PadLeft(4,"0")
@@ -134,24 +132,14 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
 
             # 改行
             write-host
-
-           
-
             Add-Content -Path $evidenceFileName -Value "`n"
             $testResult+=$testResultObject
-
-            
         }
-        
         [string]$suffix = if($CheckResult){"_true"}else{"_false"}
         if($fileClass.Move($evidenceFileName, $evidenceFileName+$suffix+".txt")){
             $evidenceJsonFileName=$evidenceJsonFileName+$suffix+".json"
-
-       
             Add-Content -Path $evidenceJsonFileName -Value (ConvertTo-Json $testResult -Depth 5)      
         }
-
-
     }
 }
 
