@@ -69,32 +69,28 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
             # エビデンス記録用データのオブジェクトを初期化
             [object]$testResultObject=@{}
 
+            $OutputMessage = {
+                param($message, $filePath)
+                write-host $message
+                Add-Content -Path $filePath -Value $message
+            }
+
             $testResultObject.Add("No", $command.order)
 
             # 実行コマンドの説明
-            [string]$msg=$INTL.FormattedMessage("Running_command", @{command=$command.command})
-            write-host $msg
             $testResultObject.Add("Command", $command.command)
-            Add-Content -Path $evidenceFileName -Value $msg
-            if($command.returnMsg -ne ""){
-                [string]$msg=$INTL.FormattedMessage("Command_result_message", @{returnMsg=$command.returnMsg})
-                write-host $msg
-                $testResultObject.Add("ExceptedResult", $command.returnMsg)
-                Add-Content -Path $evidenceFileName -Value $msg
-            }else{
-                $testResultObject.Add("ExceptedResult", "")
-            }
-            [string]$msg=$INTL.FormattedMessage("Command_returncode", @{returncode=$command.returnCode})
-            write-host $msg
+            $testResultObject.Add("ExceptedResult", $command.returnMsg)
             $testResultObject.Add("ExceptedReturncode", $command.returnCode)
-            Add-Content -Path $evidenceFileName -Value $msg
+            &$OutputMessage $INTL.FormattedMessage("Running_command", @{command=$command.command}) $evidenceFileName
+            if($command.returnMsg -ne ""){
+                &$OutputMessage $INTL.FormattedMessage("Command_result_message", @{returnMsg=$command.returnMsg}) $evidenceFileName
+            }
+            &$OutputMessage $INTL.FormattedMessage("Command_returncode", @{returncode=$command.returnCode}) $evidenceFileName
 
             # コマンド実行時刻を取得
             [datetime]$startDate=Get-Date
-            [string]$msg=$INTL.FormattedMessage("Start_datetime", @{datetime=$startDate})
-            write-host $msg
+            &$OutputMessage $INTL.FormattedMessage("Start_datetime", @{datetime=$startDate}) $evidenceFileName
             $testResultObject.Add("StartDatetime", $startDate.ToString("yyyy/MM/dd HH:mm:ss"))
-            Add-Content -Path $evidenceFileName -Value $msg
 
             # コマンド実行
             [string]$execCommand=$command.command+";$LastExitCode"
@@ -102,24 +98,19 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
 
             # コマンド実行終了時刻を取得
             [datetime]$endDate=Get-Date
-            [string]$msg=$INTL.FormattedMessage("End_datetime", @{datetime=$endDate})
-            write-host $msg
+            &$OutputMessage $INTL.FormattedMessage("End_datetime", @{datetime=$endDate}) $evidenceFileName
             $testResultObject.Add("StopDatetime", $endDate.ToString("yyyy/MM/dd HH:mm:ss"))
-            Add-Content -Path $evidenceFileName -Value $msg
             
             # コマンド実行結果を出力
-            [string]$msg=$INTL.FormattedMessage("Command_result")
-            write-host $msg
-            Add-Content -Path $evidenceFileName -Value $msg
+            &$OutputMessage $INTL.FormattedMessage("Command_result") $evidenceFileName
             [array]$resultOutput=($result | Select-Object -skiplast 1)
+
             [string]$resultOutputString=($resultOutput -join "`n")
-            write-host $resultOutputString
             $testResultObject.Add("CommandResult", $resultOutputString)
-            Add-Content -Path $evidenceFileName -Value $resultOutputString
-            [string]$msg=$INTL.FormattedMessage("Command_return_code", @{returncode=$result[-1]})
-            write-host $msg
+            &$OutputMessage $resultOutputString $evidenceFileName
+
+            &$OutputMessage $INTL.FormattedMessage("Command_return_code", @{returncode=$result[-1]}) $evidenceFileName
             $testResultObject.Add("Returncode", $result[-1])
-            Add-Content -Path $evidenceFileName -Value $msg
 
             # 簡易チェック
             if($result[-1] -ne $command.returnCode){
@@ -131,8 +122,7 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
             $testResultObject.Add("CheckResult", $CheckResult)
 
             # 改行
-            write-host
-            Add-Content -Path $evidenceFileName -Value "`n"
+            &$OutputMessage "`n" $evidenceFileName
             $testResult+=$testResultObject
         }
         [string]$suffix = if($CheckResult){"_true"}else{"_false"}
@@ -142,4 +132,3 @@ foreach($testConfigure in $USR_CONF.list.TestConfigure){
         }
     }
 }
-
