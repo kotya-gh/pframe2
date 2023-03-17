@@ -47,6 +47,24 @@ true/false‚ÍureturnCodevAureturnMsgv‚ÆÀsŒ‹‰Ê‚ğ”äŠr‚µAˆê’v‚·‚ê‚ÎtrueA•sˆ
 |returnCode|Šú‘Ò‚·‚éƒŠƒ^[ƒ“ƒR[ƒh‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B|
 |returnMsg|Šú‘Ò‚·‚éo—ÍƒƒbƒZ[ƒW‚ğw’è‚µ‚Ü‚·BŠú‘Ò’l‚Æˆê’v‚·‚é‚©ƒ`ƒFƒbƒN‚µAŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B‹ó‚Ìê‡‚Íƒ`ƒFƒbƒN‚ğƒXƒLƒbƒv‚µ‚Ü‚·B|
 
+## converter ‚É‚Â‚¢‚Ä
+
+converter‚ÍExcel‚É‹L“ü‚µ‚½ƒRƒ}ƒ“ƒh‚ğ list.json ‚É•ÏŠ·‚·‚é‹@”\‚Å‚·B
+ì¬‚µ‚½ list.json ‚ÍAulist.json_YYYYMMDDHHMMSSv‚ÌŒ`®‚ÅATestLoader\files ”z‰º‚ÉŠi”[‚µ‚Ü‚·B
+
+## list.json ‚Ìİ’è
+
+|•Ï”–¼|à–¾|
+|:--|:--|
+|excelFile|“Ç‚İ‚ŞExcelƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğw’è‚µ‚Ü‚·Bƒtƒ@ƒCƒ‹–¼‚Ì‚İ‚Ìê‡ATestLoader\files”z‰º‚ğŒŸõ‚µA‘¶İ‚µ‚È‚¢ê‡‚Íˆ—‚ğI—¹‚µ‚Ü‚·B|
+|sheetName|“Ç‚İ‚ŞExcelƒtƒ@ƒCƒ‹‚ÌƒV[ƒg–¼‚ğw’è‚µ‚Ü‚·B|
+
+## Excelƒtƒ@ƒCƒ‹‚Ì‹L“ü•û–@
+
+|testId|testNo|hostname|order|command|returnCode|returnMsg|
+|:--|:--|:--|:--|:--|:--|:--|
+|ƒeƒXƒgID(•¶š—ñ)|ƒeƒXƒg”Ô†(”’l)|ÀsƒzƒXƒg–¼(•¶š—ñ)|ƒRƒ}ƒ“ƒhÀs‡”Ô(”’l)|ÀsƒRƒ}ƒ“ƒh(•¶š—ñ)|—\‘z‚³‚ê‚éƒŠƒ^[ƒ“ƒR[ƒh(”’l)|—\‘z‚³‚ê‚éƒƒbƒZ[ƒW(•¶š—ñ/È—ª‰Â)|
+
 ## ƒ‰ƒCƒZƒ“ƒX
 
 MIT
