@@ -316,7 +316,7 @@ class Apps{
             return $true
         }
         try{
-            Start-Service -Name $service            
+            Start-Service -Name $service -ErrorAction Stop           
         }catch{
             $script:LAST_ERROR_MESSAGE=$this.INTL.FormattedMessage("Fail_to_start_service", @{service=$service})
             return $false 
@@ -348,7 +348,7 @@ class Apps{
             return $true
         }
         try{
-            Get-Service -Name $service -ComputerName $hostname | Start-Service
+            Get-Service -Name $service -ComputerName $hostname | Start-Service -ErrorAction Stop
         }catch{
             $script:LAST_ERROR_MESSAGE=$this.INTL.FormattedMessage("Fail_to_start_service", @{service=$service})
             return $false 
@@ -401,7 +401,7 @@ class Apps{
             return $true
         }
         try{
-            Stop-Service -Name $service
+            Stop-Service -Name $service -ErrorAction Stop
         }catch{
             $script:LAST_ERROR_MESSAGE=$this.INTL.FormattedMessage("Fail_to_stop_service", @{service=$service})
             return $false 
@@ -433,7 +433,7 @@ class Apps{
             return $true
         }
         try{
-            Get-Service -Name $service -ComputerName $hostname | Stop-Service -Force
+            Get-Service -Name $service -ComputerName $hostname | Stop-Service -ErrorAction Stop -Force
         }catch{
             $script:LAST_ERROR_MESSAGE=$this.INTL.FormattedMessage("Fail_to_stop_service", @{service=$service})
             return $false 
@@ -482,7 +482,7 @@ class Apps{
             return $false
         }
         try{
-            Restart-Service -Name $service
+            Restart-Service -Name $service -ErrorAction Stop
         }catch{
             $script:LAST_ERROR_MESSAGE=$this.INTL.FormattedMessage("Fail_to_restart_service", @{service=$service})
             return $false 

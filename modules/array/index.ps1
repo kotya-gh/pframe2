@@ -236,5 +236,28 @@ class ExArray{
     [array]ArraySortDesc([array]$arr){
         return ($arr | Sort-Object -Descending)
     }
+
+    <#
+     # [ExArray]ハッシュテーブル変換
+     #
+     # $cumtomObjectで示すPSCustomObjectをハッシュテーブルに変換する
+     #
+     # @access public
+     # @param PSCustomObject $cumtomObject 変換したいPSCustomObject
+     # @return HashTable 変換後のハッシュテーブル
+     # @see なし
+     # @throws なし
+     #>
+    [object]ConvertToHashTable([PSCustomObject]$cumtomObject){
+        $hashTable=@{}
+        foreach($key in $cumtomObject.PSObject.Properties.Name){
+            if($cumtomObject.$key -is [System.Management.Automation.PSCustomObject]){
+                $hashTable[$key]=$this.ConvertToHashTable($cumtomObject.$key)
+            }else{
+                $hashTable[$key]=$cumtomObject.$key
+            }
+        }
+        return $hashTable    
+    }
 }
 
