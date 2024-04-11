@@ -197,11 +197,19 @@ class Apps{
      # @throws ‚È‚µ
      #>
     [int]ProcessSearch([string]$process){
-        [array]$list=(Get-Process | select-object ProcessName)
         [int]$count=0
+        try {
+            [regex]::Match("", $process) | Out-Null
+        }
+        catch {
+            return $count
+        }
+        [array]$list=(Get-Process | select-object ProcessName)
         foreach($proc in $list){
-            if($proc.ProcessName -eq $process){
-                $count++
+            if($proc.ProcessName -cmatch $process){
+                if ($Matches[0] -ceq $proc.ProcessName) {
+                    $count++
+                }
             }
         }
         return $count
